@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Attestation Covid</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/polight/decor@master/decor.css">
+  <script src="utils.js"></script>
+
+</head>
+
+<body>
+  <h2>Mes modèles</h2>
+  <section id="cards">
+    <a href="/generate.html#{params}" title="Générer cette attestation">
+      <ul>
+        <li><img src="img/reason.svg"> <span>{reason}</span></li>
+        <li><img src="img/duration.svg"> <span>{delay} min. plus tôt</span></li>
+      </ul>
+    </a>
+  </section>
+
+  <div>
+    <h2>Créer un modèle d'attestation</h2>
+    <form onsubmit="submitData(this)">
+      <fieldset>
+        <label>Prénom</label>
+        <input name="firstname" autocomplete="given-name" placeholder="François"
+          aria-labelledby="field-firstname-label" required>
+
+        <label>Nom</label>
+        <input name="lastname" autocomplete="family-name" placeholder="Wyszkowski"
+          aria-labelledby="field-lastname-label" required>
+      </fieldset>
+
+      <fieldset>
+        <label>Date de naissance (jj/mm/aaaa)</label>
+        <input inputmode="numeric" id="birthday" name="birthday" placeholder="01/01/1970" maxlength="10" required>
+
+        <label>Ville de naissance</label>
+        <input name="placeofbirth" placeholder="Antibes" required>
+      </fieldset>
+
+      <fieldset>
+        <label>Rue</label>
+        <input name="address" autocomplete="address-line1"
+          aria-labelledby="field-address-label" placeholder="1 place de la mairie" required>
+
+        <label>Ville</label>
+        <input name="city" autocomplete="address-level1" aria-labelledby="field-town-label"
+          placeholder="Bar-sur-Loup" required>
+
+        <label>Code postal</label>
+        <input name="zipcode" autocomplete="zipcode" minlength="5" maxlength="5"
+          aria-labelledby="field-zipcode-label" placeholder="06620" required>
+      </fieldset>
+
+      <fieldset>
+        <label>Motif du déplacement</label>
+        <select name="field-reason">
+          <option value="0"> — Sélectionnez un motif — </option>
+          <option value="travail">Déplacement professionnel</option>
+          <option value="achats">Achat de nécessité</option>
+          <option value="enfants">Enfants / École</option>
+          <option value="sport_animaux">Déplacement d'1h/1km de loisir / sport</option>
+          <option value="sante">Aide à la santé</option>
+          <option value="famille">Nécessité familialle</option>
+          <option value="handicap">Aide à une personne handicapée</option>
+          <option value="convocation">Convocation médicale ou administrative</option>
+          <option value="missions">Mission d'utilité publique</option>
+        </select>
+        <label>Depuis</label>
+        <div class=row><input type="number" name="delay" placeholder="0 min = maintenant" value="0" min="0" max="120"> minutes</div>
+      </fieldset>
+      <button>Valider</button>
+    </form>
+    <div id="generation-link">
+      <a href="generate.html"></a>
+    </div>
+  </div>
+</body>
+<script src="index.js"></script>
+
+</html>
+
+<style>
+  #cards {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  #cards > * {
+    border: 1px solid #eee;
+    max-width: 100%;
+    min-width: 200px;
+    padding: 1rem;
+    margin: 0 1rem 1rem 0;
+    border-radius: .3rem;
+  }
+  #cards a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+  #cards a:hover {
+    background-color: #eee;
+  }
+  #cards ul {
+    padding: 0;
+  }
+  #cards li {
+    display: flex;
+  }
+  #cards img {
+    height: 32px;
+    opacity: .55;
+  }
+
+</style>
