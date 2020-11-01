@@ -14,12 +14,15 @@
 <body>
   <h2>Mes modèles</h2>
   <section id="cards">
-    <a href="/generate.html#{params}" title="Générer cette attestation">
-      <ul>
-        <li><img src="img/reason.svg"> <span>{reason}</span></li>
-        <li><img src="img/duration.svg"> <span>{delay} min. plus tôt</span></li>
-      </ul>
-    </a>
+    <article>
+      <button title="supprimer ce modèle" onclick="deleteAttestation({id})">X</button>
+      <a href="/generate.html#{params}" title="Générer cette attestation">
+        <ul>
+          <li><img src="img/reason.svg"> <span>{reason}</span></li>
+          <li><img src="img/duration.svg"> <span>{delay} min. plus tôt</span></li>
+        </ul>
+      </a>
+    </article>
   </section>
 
   <div>
@@ -115,6 +118,17 @@
   #cards img {
     height: 32px;
     opacity: .55;
+  }
+
+  article {
+    position: relative;
+  }
+  article button {
+    position: absolute;
+    top: .3rem;
+    right: .3rem;
+    border: none;
+    padding: 0;
   }
 
 </style>
