@@ -1,11 +1,12 @@
-function prefillFromURL() {
-  const params = queryParams()
-  for (let p in params) {
+function prefill(data) {
+  for (let p in data) {
     const input = document.querySelector(`[name="${p}"]`)
-    if(input) input.value = params[p]
+    if(input) input.value = data[p]
   }
 }
-prefillFromURL()
+
+if(location.search) prefill(queryParams())
+else prefill(JSON.parse(localStorage.user || '{}'))
 
 function loadAttestationsCards() {
   const container = document.querySelector('#cards')
@@ -36,6 +37,7 @@ function serialize(obj) {
 }
 
 function saveData(data) {
+  localStorage.user = JSON.stringify(data)
   const attestations = JSON.parse(localStorage.attestations || '[]')
   attestations.push(data)
   localStorage.attestations = JSON.stringify(attestations)
