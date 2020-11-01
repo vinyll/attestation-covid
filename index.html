@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Attestation Covid</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Attestation Covid générique</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/polight/decor@master/decor.css">
   <script src="utils.js"></script>
@@ -36,7 +37,7 @@
 
       <fieldset>
         <label>Date de naissance (jj/mm/aaaa)</label>
-        <input inputmode="numeric" id="birthday" name="birthday" placeholder="01/01/1970" maxlength="10" required>
+        <input type=date id="birthday" name="birthday" placeholder="01/01/1970" minlength="10" maxlength="10" required>
 
         <label>Ville de naissance</label>
         <input name="placeofbirth" placeholder="Antibes" required>
