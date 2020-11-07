@@ -3,7 +3,11 @@ import print from 'print-js'
 import uniqWith from 'lodash/uniqWith'
 import isEqual from 'lodash/isEqual'
 import { PDFDocument, StandardFonts } from 'pdf-lib'
-import { peoples, reasons, attachments, times } from './data.js'
+import { reasons, attachments, times } from './data.js'
+
+const peoples = JSON.parse(localStorage.persons, '[]').reduce((acc, person) => {
+  return Object.assign(acc, { [person.firstname]: person })
+}, {})
 
 function recall(values) {
   ;[...document.querySelectorAll("#who input")].forEach(el => {
@@ -46,12 +50,24 @@ function getDate(when) {
   if (when === "") return ""
   if (when > 1000000) return new Date(when)
   return new Date(Date.now() + when * 1000 * 60)
-} 
+}
 function onFormChange() {
   updateWhat()
   updateDo()
   save()
 }
+
+function addPerson(event) {
+  const person = Array.from(event.target.elements).filter(i=>i.name).reduce((acc, item) => {
+    return Object.assign(acc, {[item.name]: item.value})
+  }, {})
+  person.reasons = ['travail', 'achats', 'sante', 'sport_animaux', 'enfants']
+  debugger
+  const persons = JSON.parse(localStorage.persons || '[]')
+  persons.push(person)
+  localStorage.persons = JSON.stringify(persons)
+}
+
 function updateWhat() {
   const activatedPeoples = getWho().map(id => peoples[id])
   const reasonsToKeep = reasonsForPeoples(activatedPeoples)
@@ -73,11 +89,11 @@ function reasonsForPeoples(peoples) {
         },
         prev
       )
-    }, 
+    },
     []
   )
 }
-function monitorForm() {
+function monitorForms() {
   document.getElementById('form').addEventListener('change', onFormChange)
   ;[...document.querySelectorAll('#do button')].forEach(el => {
     if (el.id=='raz') {
@@ -96,6 +112,8 @@ function monitorForm() {
       el.addEventListener('click', doDownload)
     }
   })
+
+  document.getElementById('addPerson').addEventListener('submit', addPerson)
 }
 function doPrint(e) {
   if (e) e.preventDefault()
@@ -137,7 +155,7 @@ function fillForm() {
   const who = document.getElementById('who')
   Object.keys(peoples).forEach(id => {
     who.appendChild(createInput({id, type: 'checkbox'}))
-    who.appendChild(createLabel({id, emoji: peoples[id].emoji}))
+    who.appendChild(createLabel({id, emoji: peoples[id].firstname}))
   })
   const what = document.getElementById('what')
   reasonsForPeoples(peoples).forEach(id => {
@@ -205,7 +223,7 @@ function fillHistory() {
     li.appendChild(link)
     li.appendChild(trash)
     history.appendChild(li)
-  })  
+  })
 }
 function recallHistory(e) {
   const target = e.target
@@ -216,7 +234,7 @@ function recallHistory(e) {
 }
 function initForm() {
   fillForm()
-  monitorForm()
+  monitorForms()
   recall(getPreviousValues())
   onFormChange()
   fillHistory()
@@ -253,7 +271,7 @@ function persist() {
       setPrevious(time, true)
     }
   }
-  const data = { 
+  const data = {
     who: getWho(),
     what: getWhat(),
     when: getWhen(),
@@ -267,7 +285,7 @@ function persist() {
 }
 function save() {
   const previous = document.getElementById('previous')
-  const data = { 
+  const data = {
     who: getWho(),
     what: getWhat(),
     when: getWhen(),
@@ -296,7 +314,7 @@ async function getPDF(data) {
     })
   )
   const attach = await Promise.all(
-      attachments.filter(a => 
+      attachments.filter(a =>
       data.reduce(
         (prev, {who, what}) => {
           if (who.includes(a.profile) && what.includes(a.reason)) return true
@@ -466,7 +484,7 @@ function loadFile(path) {
 async function mergePDF(pdfs) {
   const doc = await PDFDocument.create()
   for (const pdf of pdfs) {
-    await doc.copyPages(pdf, pdf.getPageIndices()).then(pages => 
+    await doc.copyPages(pdf, pdf.getPageIndices()).then(pages =>
       Promise.all(
         pages.map(
           async page => await doc.addPage(page)

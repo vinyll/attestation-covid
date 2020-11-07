@@ -26,15 +26,13 @@
         padding-bottom: 0.5rem;
         width: 4rem;
       }
-      fieldset { 
+      fieldset {
         height: 100%;
-        flex-direction: column;
         border: none;
         margin: 0;
         padding: 0;
-        display: flex;
-        font-size: 2rem;
       }
+
       fieldset > label {
         flex-grow: 0;
         padding: 0.25ex 0.5ex;
@@ -52,6 +50,13 @@
         border-color: #999999;
         opacity: 0.5;
       }
+
+      #form fieldset {
+        flex-direction: column;
+        display: flex;
+        font-size: 2rem;
+      }
+
       p {
         width: 100%;
         display: flex;
@@ -65,6 +70,22 @@
       ul {
         width: 100%;
       }
+      #addPerson fieldset {
+        display: block;
+      }
+      #addPerson input {
+        width: 100%;
+        padding: .5rem 1rem;
+        border: 1px solid #ccc;
+        border-radius: .3rem;
+        margin-bottom: 1rem;
+      }
+      #addPerson {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+      }
+
       input[type=checkbox], input[type=radio] {
         display: none;
       }
@@ -94,11 +115,38 @@
         margin-right: 1rem;
         flex-grow: 1;
       }
+
+      button {
+        font-size: inherit;
+        padding: .5rem 1rem;
+        border: 1px solid #ccc;
+        border-radius: .3rem;
+      }
     </style>
     <link href="./certificate.pdf" rel="certificate">
 </head>
 
 <body>
+
+<details>
+  <summary>Ajouter un utilisateur</summary>
+  <form id="addPerson">
+    <fieldset>
+      <input name=firstname placeholder="Prénom">
+      <input name=lastname placeholder="Nom">
+    </fieldset>
+    <fieldset>
+      <input name=birthday pattern="\d{2}/\d{2}/\d{4}" placeholder="Date de naissance (jj/mm/aaaa)">
+      <input name=placeofbirth placeholder="Ville de naissance">
+    </fieldset>
+    <fieldset>
+      <input name=address placeholder="Numéro et rue">
+      <input name=zipcode pattern="\w{5}" placeholder="Code postal">
+      <input name=city placeholder="Ville">
+    </fieldset>
+    <button>Ajouter</button>
+  </form>
+</details>
 
 <form id=form>
   <fieldset id=who>
@@ -113,8 +161,8 @@
   <hr>
   <p id=do>
     <!-- <button type=submit id=save value=Enregistrer>🎛</button> -->
-    <button type=submit id=raz value=RAZ>🗑</button> 
-    <button type=submit id=show value=Voir>📄</button> 
+    <button type=submit id=raz value=RAZ>🗑</button>
+    <button type=submit id=show value=Voir>📄</button>
     <button type=submit id=print value=Imprimer>🖨</button>
     <button type=submit id=download value=Télécharger>📥</button>
   </p>
