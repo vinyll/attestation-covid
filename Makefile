@@ -1,5 +1,6 @@
 deploy:
 	git checkout gh-pages
+	git rebase main
 	npm run build
 	cp -R dist/* docs/
 	git add docs
