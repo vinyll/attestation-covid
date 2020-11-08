@@ -5,4 +5,5 @@ deploy:
 	git add docs
 	git commit docs -m "Building for Gh Pages"
 	git push -f origin gh-pages
+	rm -fr docs/
 	git checkout -

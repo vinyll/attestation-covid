@@ -5,7 +5,7 @@ import isEqual from 'lodash/isEqual'
 import { PDFDocument, StandardFonts } from 'pdf-lib'
 import { reasons, attachments, times } from './data.js'
 
-const peoples = JSON.parse(localStorage.persons, '[]').reduce((acc, person) => {
+const peoples = JSON.parse(localStorage.persons || '[]').reduce((acc, person) => {
   return Object.assign(acc, { [person.firstname]: person })
 }, {})
 
@@ -62,7 +62,6 @@ function addPerson(event) {
     return Object.assign(acc, {[item.name]: item.value})
   }, {})
   person.reasons = ['travail', 'achats', 'sante', 'sport_animaux', 'enfants']
-  debugger
   const persons = JSON.parse(localStorage.persons || '[]')
   persons.push(person)
   localStorage.persons = JSON.stringify(persons)
@@ -196,7 +195,7 @@ function removeHistory(e) {
   e.preventDefault()
   const trash = e.target
   const link = trash.previousSibling
-  const data = JSON.parse(link.getAttribute('data-value'))
+  const data = JSON.parse(link.getAttribute('data-value') || '{}')
   const history = getHistory()
   const json = JSON.stringify(history.filter(v => !isEqual(v, data)))
   localStorage.setItem('history', json)
@@ -228,7 +227,7 @@ function fillHistory() {
 function recallHistory(e) {
   const target = e.target
   const json = target.getAttribute('data-value')
-  const value = JSON.parse(json)
+  const value = JSON.parse(json || '{}')
   recall(value)
   onFormChange()
 }
